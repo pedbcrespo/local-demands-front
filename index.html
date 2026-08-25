@@ -4,201 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Demandas e Moradores</title>
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --status-pending-bg: #fef3c7;
-            --status-pending-text: #92400e;
-            --status-progress-bg: #dbeafe;
-            --status-progress-text: #1e40af;
-            --status-done-bg: #dcfce7;
-            --status-done-text: #166534;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 2rem;
-            line-height: 1.5;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        h1, h2, h3 {
-            color: var(--text-main);
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Tabela Styling */
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: #f1f5f9;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .status-pendent {
-            background-color: var(--status-pending-bg);
-            color: var(--status-pending-text);
-        }
-
-        .status-finished {
-            background-color: var(--status-done-bg);
-            color: var(--status-done-text);
-        }
-
-        /* Formulário Styling */
-        fieldset {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            background-color: #fafafa;
-        }
-
-        legend {
-            font-weight: 600;
-            color: var(--primary-color);
-            padding: 0 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        input[type="text"],
-        input[type="tel"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 0.6rem 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: var(--text-main);
-            background-color: #ffffff;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .btn-submit {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--primary-hover);
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -215,25 +21,8 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>João Silva</td>
-                            <td>Troca de lâmpada do poste público na esquina da rua.</td>
-                            <td>Rua das Flores, 123 - Centro, Rio de Janeiro - RJ</td>
-                            <td><span class="status-badge status-pendent">Pendente</span></td>
-                        </tr>
-                        <tr>
-                            <td>Maria Oliveira</td>
-                            <td>Solicitação de reparo de vazamento na tubulação principal.</td>
-                            <td>Av. Brasil, 456, Apto 201 - Copacabana, Rio de Janeiro - RJ</td>
-                            <td><span class="status-badge status-finished">Concluído</span></td>
-                        </tr>
-                        <tr>
-                            <td>Carlos Eduardo</td>
-                            <td>Poda de árvore com risco de queda sobre fiação elétrica.</td>
-                            <td>Rua São José, 789 - Tijuca, Rio de Janeiro - RJ</td>
-                            <td><span class="status-badge status-finished">Concluído</span></td>
-                        </tr>
+                    <tbody id="demandas-tbody">
+                        <tr><td colspan="4">Carregando demandas...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -272,23 +61,14 @@
                         </div>
                         <div class="form-group">
                             <label for="city">Cidade</label>
-                            <select id="city" name="city" required>
-                                <option value="">Selecione uma cidade</option>
-                                <option value="Rio de Janeiro">Rio de Janeiro</option>
-                                <option value="Niterói">Niterói</option>
-                                <option value="São Gonçalo">São Gonçalo</option>
-                                <option value="Duque de Caxias">Duque de Caxias</option>
-                                <option value="Outra">Outra</option>
+                            <select id="city" name="city" required disabled>
+                                <option value="">Selecione um estado primeiro</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="state">Estado</label>
                             <select id="state" name="state" required>
-                                <option value="">Selecione o estado</option>
-                                <option value="RJ">Rio de Janeiro (RJ)</option>
-                                <option value="SP">São Paulo (SP)</option>
-                                <option value="MG">Minas Gerais (MG)</option>
-                                <option value="ES">Espírito Santo (ES)</option>
+                                <option value="">Carregando...</option>
                             </select>
                         </div>
                     </div>
@@ -309,12 +89,7 @@
                         <div class="form-group full-width">
                             <label for="demandType">Tipo de Demanda</label>
                             <select id="demandType" name="demandType" required>
-                                <option value="">Selecione o tipo de demanda</option>
-                                <option value="iluminacao">Iluminação Pública</option>
-                                <option value="saneamento">Saneamento / Vazia</option>
-                                <option value="infraestrutura">Infraestrutura / Asfalto</option>
-                                <option value="poda">Poda de Árvores</option>
-                                <option value="outros">Outros</option>
+                                <option value="">Carregando...</option>
                             </select>
                         </div>
                     </div>
@@ -324,6 +99,6 @@
             </form>
         </section>
     </div>
-    <script src="index.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
