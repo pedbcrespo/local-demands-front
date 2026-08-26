@@ -67,7 +67,7 @@ function setupCityDependency() {
 
             const cities = await response.json();
             citySelect.innerHTML = '<option value="">Selecione uma cidade</option>' +
-                cities.sort().map(city => `<option value="${city}">${city}</option>`).join('');
+                cities.sort().map(city => `<option value="${city.city_name}">${city.city_name}</option>`).join('');
             citySelect.disabled = false;
         } catch (error) {
             console.error('Erro ao carregar as cidades:', error);
