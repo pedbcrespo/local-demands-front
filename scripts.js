@@ -8,8 +8,8 @@ const DEMAND_TYPES = [
 ];
 
 const statusStyle = {
-    PENDING: { style: 'status-pendent', message: 'PENDENTE' },
-    FINISHED: { style: 'status-finished', message: 'CONCLUIDO' },
+    PENDING: { name: 'PENDING', style: 'status-pendent', message: 'PENDENTE' },
+    FINISHED: { name: 'FINISHED', style: 'status-finished', message: 'CONCLUIDO' },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -76,6 +76,26 @@ function setupCityDependency() {
     });
 }
 
+async function finishDemand(id, checkboxElement) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demands/${id}/finish`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro ao finalizar demanda. Status: ${response.status}`);
+        }
+
+        alert(`Demanda finalizada com sucesso!`);
+        loadDemands();
+
+    } catch (error) {
+        console.error('Erro ao finalizar demanda:', error);
+        alert('Falha ao finalizar a demanda.');
+        checkboxElement.checked = false;
+    }
+}
 
 async function loadDemands() {
     const tbody = document.getElementById('demandas-tbody');
@@ -112,13 +132,21 @@ function renderDemands(demands) {
             ? `${demand.address.street} - ${demand.address.district}, ${demand.address.city} - ${demand.address.state}`
             : '—';
         const status = statusStyle[demand.status] || { style: '', message: demand.status };
-
+        const isFinished = demand.status === statusStyle.FINISHED.name;
         return `
             <tr>
                 <td>${demand.resident ?? '—'}</td>
                 <td>${demand.description}</td>
                 <td>${address}</td>
                 <td><span class="status-badge ${status.style}">${status.message}</span></td>
+                <td id="demand-${demand.id}" class="clicable-option">
+                    <input 
+                        type="checkbox" 
+                        id="checkbox-demand-${demand.id}" 
+                        class="finish-demand-checkbox"
+                        ${isFinished ? 'checked disabled' : ''}
+                        onchange="finishDemand(${demand.id}, this)">
+                </td>
             </tr>
         `;
     }).join('');

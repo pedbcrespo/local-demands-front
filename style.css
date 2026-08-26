@@ -191,3 +191,7 @@ textarea {
 .btn-submit:hover {
     background-color: var(--primary-hover);
 }
+
+.clicable-option {
+    cursor: pointer;
+}
