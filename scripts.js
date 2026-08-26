@@ -1,6 +1,5 @@
 const API_BASE_URL = 'http://127.0.0.1:5000/local-demands';
 
-// Ajuste estes valores para baterem exatamente com o enum DemandType do backend.
 const DEMAND_TYPES = [
     { value: 'STRUCTURAL', label: 'Estrutural' },
     { value: 'PERIODIC', label: 'Periódica' },
