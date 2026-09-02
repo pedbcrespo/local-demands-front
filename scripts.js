@@ -11,6 +11,36 @@ const statusStyle = {
     FINISHED: { name: 'FINISHED', style: 'status-finished', message: 'CONCLUIDO' },
 };
 
+const states = [
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO"
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     loadDemandTypes();
     loadStates();
@@ -25,19 +55,11 @@ function loadDemandTypes() {
         DEMAND_TYPES.map(t => `<option value="${t.value}">${t.label}</option>`).join('');
 }
 
-// STATES
 async function loadStates() {
     const stateSelect = document.getElementById('state');
     try {
-        const response = await fetch(`${API_BASE_URL}/address/state`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-
-        const states = await response.json();
         stateSelect.innerHTML = '<option value="">Selecione o estado</option>' +
-            states.sort().map(state => `<option value="${state}">${state}</option>`).join('');
+        states.sort().map(state => `<option value="${state}">${state}</option>`).join('');
     } catch (error) {
         console.error('Erro ao carregar os Estados:', error);
         stateSelect.innerHTML = '<option value="">Erro ao carregar estados</option>';
