@@ -46,36 +46,28 @@
                             <label for="telefone">Telefone</label>
                             <input type="tel" id="telefone" name="telefone" placeholder="(21) 99999-9999" required>
                         </div>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Endereço</legend>
-                    <div class="form-grid">
                         <div class="form-group">
-                            <label for="street">Rua</label>
-                            <input type="text" id="street" name="street" placeholder="Rua" required>
+                            <label for="resident-street">Rua</label>
+                            <input type="text" id="resident-street" name="resident-street" placeholder="Rua" required>
                         </div>
                         <div class="form-group">
-                            <label for="district">Bairro</label>
-                            <input type="text" id="district" name="district" placeholder="Bairro" required>
+                            <label for="resident-district">Bairro</label>
+                            <input type="text" id="resident-district" name="resident-district" placeholder="Bairro" required>
                         </div>
                         <div class="form-group">
-                            <label for="city">Cidade</label>
-                            <select id="city" name="city" required disabled>
+                            <label for="resident-city">Cidade</label>
+                            <select id="resident-city" name="resident-city" required disabled>
                                 <option value="">Selecione um estado primeiro</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="state">Estado</label>
-                            <select id="state" name="state" required>
+                            <label for="resident-state">Estado</label>
+                            <select id="resident-state" name="resident-state" required>
                                 <option value="">Carregando...</option>
                             </select>
                         </div>
                     </div>
                 </fieldset>
-
-                <!-- Subgrupo Demanda -->
                 <fieldset>
                     <legend>Demanda</legend>
                     <div class="form-grid">
@@ -90,6 +82,26 @@
                         <div class="form-group full-width">
                             <label for="demandType">Tipo de Demanda</label>
                             <select id="demandType" name="demandType" required>
+                                <option value="">Carregando...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="demand-street">Rua</label>
+                            <input type="text" id="demand-street" name="demand-street" placeholder="Rua" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="demand-district">Bairro</label>
+                            <input type="text" id="demand-district" name="demand-district" placeholder="Bairro" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="demand-city">Cidade</label>
+                            <select id="demand-city" name="demand-city" required disabled>
+                                <option value="">Selecione um estado primeiro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="demand-state">Estado</label>
+                            <select id="demand-state" name="demand-state" required>
                                 <option value="">Carregando...</option>
                             </select>
                         </div>

@@ -184,23 +184,28 @@ function setupFormSubmit() {
         const cpf = document.getElementById('cpf').value;
         const telefone = document.getElementById('telefone').value;
 
-        const street = document.getElementById('street').value;
-        const district = document.getElementById('district').value;
-        const city = document.getElementById('city').value;
-        const state = document.getElementById('state').value;
+        const residentStreet = document.getElementById('resident-street').value;
+        const residentDistrict = document.getElementById('resident-district').value;
+        const residentCity = document.getElementById('resident-city').value;
+        const residentState = document.getElementById('resident-state').value;
+
+        const demandStreet = document.getElementById('demand-street').value;
+        const demandDistrict = document.getElementById('demand-district').value;
+        const demandCity = document.getElementById('demand-city').value;
+        const demandState = document.getElementById('demand-state').value;
 
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
         const demandType = document.getElementById('demandType').value;
 
         try {
-            const addressResponse = await fetch(`${API_BASE_URL}/address/register`, {
+            const residentAddressResponse = await fetch(`${API_BASE_URL}/address/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ street, district, city, state }),
+                body: JSON.stringify({ street: residentStreet, district: residentDistrict, city: residentCity, state: residentState }),
             });
-            if (!addressResponse.ok) throw new Error('Erro ao registrar endereço');
-            const address = await addressResponse.json();
+            if (!residentAddressResponse.ok) throw new Error('Erro ao registrar endereço');
+            const residentAddress = await residentAddressResponse.json();
 
             const residentResponse = await fetch(`${API_BASE_URL}/residents/register`, {
                 method: 'POST',
@@ -209,11 +214,19 @@ function setupFormSubmit() {
                     full_name: nome,
                     cpf: cpf,
                     phone: telefone,
-                    address_id: address.id,
+                    address_id: residentAddress.id,
                 }),
             });
-            if (!residentResponse.ok) throw new Error('Erro ao registrar morador (CPF já cadastrado?)');
+            if (!residentResponse.ok) throw new Error('Erro ao registrar morador');
             const resident = await residentResponse.json();
+
+            const demandAddressResponse = await fetch(`${API_BASE_URL}/address/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ street: demandStreet, district: demandDistrict, city: demandCity, state: demandState }),
+            });
+            if (!demandAddressResponse.ok) throw new Error('Erro ao registrar endereço');
+            const demandAddress = await demandAddressResponse.json();
 
             const demandResponse = await fetch(`${API_BASE_URL}/demands`, {
                 method: 'POST',
@@ -222,7 +235,7 @@ function setupFormSubmit() {
                     title: title,
                     description: description,
                     type: demandType,
-                    address_id: address.id,
+                    address_id: demandAddress.id,
                     resident_id: resident.id,
                 }),
             });
