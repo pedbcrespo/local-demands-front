@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDemandTypes();
     loadStates();
     loadDemands();
-    setupCityDependency();
+    setupResidentCityDependency();
+    setupDemandCityDependency();
     setupFormSubmit();
 });
 
@@ -55,30 +56,28 @@ function loadDemandTypes() {
         DEMAND_TYPES.map(t => `<option value="${t.value}">${t.label}</option>`).join('');
 }
 
-async function loadStates() {
-    const stateSelect = document.getElementById('state');
-    try {
-        stateSelect.innerHTML = '<option value="">Selecione o estado</option>' +
+function loadStateElement(stateSelectId) {
+    const stateSelect = document.getElementById(stateSelectId);
+    stateSelect.innerHTML = '<option value="">Selecione o estado</option>' +
         states.sort().map(state => `<option value="${state}">${state}</option>`).join('');
-    } catch (error) {
-        console.error('Erro ao carregar os Estados:', error);
-        stateSelect.innerHTML = '<option value="">Erro ao carregar estados</option>';
-    }
 }
 
-function setupCityDependency() {
-    const stateSelect = document.getElementById('state');
-    const citySelect = document.getElementById('city');
+function loadStates() {
+    loadStateElement('resident-state');
+    loadStateElement('demand-state');
+}
 
+async function loadCities(stateSelectId,citySelectId) {
+    const citySelect = document.getElementById(citySelectId);
+    const stateSelect = document.getElementById(stateSelectId);
+    citySelect.disabled = true;
+    citySelect.innerHTML = '<option value="">Carregando...</option>';
+    
     stateSelect.addEventListener('change', async () => {
-        citySelect.disabled = true;
-        citySelect.innerHTML = '<option value="">Carregando...</option>';
-
         if (!stateSelect.value) {
             citySelect.innerHTML = '<option value="">Selecione um estado primeiro</option>';
             return;
         }
-
         try {
             const response = await fetch(`${API_BASE_URL}/address/state/${stateSelect.value}`, {
                 method: 'GET',
@@ -90,11 +89,19 @@ function setupCityDependency() {
             citySelect.innerHTML = '<option value="">Selecione uma cidade</option>' +
                 cities.sort().map(city => `<option value="${city.city_name}">${city.city_name}</option>`).join('');
             citySelect.disabled = false;
-        } catch (error) {
+        }   catch (error) {
             console.error('Erro ao carregar as cidades:', error);
             citySelect.innerHTML = '<option value="">Erro ao carregar cidades</option>';
         }
-    });
+    })
+}
+
+function setupResidentCityDependency() {
+    loadCities('resident-state', 'resident-city');
+}
+
+function setupDemandCityDependency() {
+    loadCities('demand-state', 'demand-city');
 }
 
 async function finishDemand(id, checkboxElement) {
@@ -149,15 +156,17 @@ function renderDemands(demands) {
     }
 
     tbody.innerHTML = demands.map(demand => {
-        const address = demand.address
-            ? `${demand.address.street} - ${demand.address.district}, ${demand.address.city} - ${demand.address.state}`
+        const {address} = demand
+            ? `${address.street} - ${address.district}, ${address.city} - ${address.state}`
             : '—';
         const status = statusStyle[demand.status] || { style: '', message: demand.status };
+        const type = DEMAND_TYPES.find(t => t.value === demand.type)?.label || demand.type;
         const isFinished = demand.status === statusStyle.FINISHED.name;
         return `
             <tr>
-                <td>${demand.resident ?? '—'}</td>
-                <td>${demand.description}</td>
+                <td>${demand.title ?? '—'}</td>
+                <td>${demand.description ?? '—'}</td>
+                <td>${type}</td>
                 <td>${address}</td>
                 <td><span class="status-badge ${status.style}">${status.message}</span></td>
                 <td id="demand-${demand.id}" class="clicable-option">
@@ -243,7 +252,8 @@ function setupFormSubmit() {
 
             alert('Demanda enviada com sucesso!');
             demandaForm.reset();
-            document.getElementById('city').innerHTML = '<option value="">Selecione um estado primeiro</option>';
+            document.getElementById('resident-city').innerHTML = '<option value="">Selecione um estado primeiro</option>';
+            document.getElementById('demand-city').innerHTML = '<option value="">Selecione um estado primeiro</option>';
             loadDemands();
         } catch (error) {
             console.error('Falha na requisição:', error);
