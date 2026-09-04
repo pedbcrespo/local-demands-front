@@ -156,8 +156,9 @@ function renderDemands(demands) {
     }
 
     tbody.innerHTML = demands.map(demand => {
-        const {address} = demand
-            ? `${address.street} - ${address.district}, ${address.city} - ${address.state}`
+        if(!demand) return '';
+        const address = demand.address
+            ? `${demand.address.street} - ${demand.address.district}, ${demand.address.city} - ${demand.address.state}`
             : '—';
         const status = statusStyle[demand.status] || { style: '', message: demand.status };
         const type = DEMAND_TYPES.find(t => t.value === demand.type)?.label || demand.type;
@@ -177,9 +178,31 @@ function renderDemands(demands) {
                         ${isFinished ? 'checked disabled' : ''}
                         onchange="finishDemand(${demand.id}, this)">
                 </td>
+                <td id="delete-demand-${demand.id}" class="clicable-option">
+                    <button type="button" onclick="deleteDemand(${demand.id})" class="btn btn-danger">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </td>
             </tr>
         `;
     }).join('');
+}
+
+async function deleteDemand(id) {
+    if (!confirm('Tem certeza que deseja excluir esta demanda?')) {
+        return;
+    }
+    try {
+        const response = await fetch(`${API_BASE_URL}/demands/${id}/delete`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+        loadDemands();
+    } catch (error) {
+        console.error('Erro ao deletar demanda:', error);
+    }
 }
 
 function setupFormSubmit() {
