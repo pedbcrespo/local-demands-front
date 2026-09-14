@@ -158,7 +158,7 @@ function renderDemands(demands) {
                         onchange="finishDemand(${demand.id}, this)">
                 </td>
                 <td id="delete-demand-${demand.id}" class="clicable-option">
-                    <button type="button" onclick="deleteDemand(${demand.id})" class="btn btn-danger">
+                    <button type="button" onclick="deleteDemand(${demand})" class="btn btn-danger">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </td>
@@ -167,12 +167,16 @@ function renderDemands(demands) {
     }).join('');
 }
 
-async function deleteDemand(id) {
+async function deleteDemand(demand) {
+    if(demand.status === statusStyle.FINISHED.name) {
+        alert('Não é possível excluir uma demanda concluída.');
+        return;
+    }
     if (!confirm('Tem certeza que deseja excluir esta demanda?')) {
         return;
     }
     try {
-        const response = await fetch(`${API_BASE_URL}/demands/${id}/delete`, {
+        const response = await fetch(`${API_BASE_URL}/demands/${demand.id}/delete`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
         });
