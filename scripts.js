@@ -191,9 +191,9 @@ function setupFormSubmit() {
     demandaForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const nome = document.getElementById('nome').value;
+        const name = document.getElementById('name').value;
         const cpf = document.getElementById('cpf').value;
-        const telefone = document.getElementById('telefone').value;
+        const phone = document.getElementById('phone').value;
 
         const residentStreet = document.getElementById('resident-street').value;
         const residentDistrict = document.getElementById('resident-district').value;
@@ -222,9 +222,9 @@ function setupFormSubmit() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    full_name: nome,
+                    full_name: name,
                     cpf: cpf,
-                    phone: telefone,
+                    phone: phone,
                     address_id: residentAddress.id,
                 }),
             });
