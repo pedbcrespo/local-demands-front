@@ -20,6 +20,8 @@ const states = [
     "SE", "TO"
 ];
 
+let currentDemands = [];
+
 document.addEventListener('DOMContentLoaded', () => {
     loadDemandTypes();
     loadStates();
@@ -119,6 +121,7 @@ async function loadDemands() {
         if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
 
         const demands = await response.json();
+        currentDemands = [...demands];
         renderDemands(demands);
     } catch (error) {
         console.error('Erro ao carregar as demandas:', error);
@@ -158,7 +161,7 @@ function renderDemands(demands) {
                         onchange="finishDemand(${demand.id}, this)">
                 </td>
                 <td id="delete-demand-${demand.id}" class="clicable-option">
-                    <button type="button" onclick="deleteDemand(${demand})" class="btn btn-danger">
+                    <button type="button" onclick="deleteDemand(${demand.id})" class="btn btn-danger">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </td>
@@ -167,7 +170,12 @@ function renderDemands(demands) {
     }).join('');
 }
 
-async function deleteDemand(demand) {
+function getDemandById(id) {
+    return currentDemands.find(demand => demand.id === id);
+}
+
+async function deleteDemand(id) {
+    const demand = getDemandById(id);
     if(demand.status === statusStyle.FINISHED.name) {
         alert('Não é possível excluir uma demanda concluída.');
         return;
@@ -176,7 +184,7 @@ async function deleteDemand(demand) {
         return;
     }
     try {
-        const response = await fetch(`${API_BASE_URL}/demands/${demand.id}/delete`, {
+        const response = await fetch(`${API_BASE_URL}/demands/${id}/delete`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
         });
