@@ -21,7 +21,6 @@ const states = [
 ];
 
 let currentDemands = [];
-let modalOpen = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadDemandTypes();
@@ -182,12 +181,10 @@ function viewDemand(id) {
         : '—';
 
     document.getElementById('demand-modal').classList.add('active');
-    modalOpen = true;
 }
 
 function closeModal() {
     document.getElementById('demand-modal').classList.remove('active');
-    modalOpen = false;
 }
 
 function getDemandById(id) {
