@@ -271,7 +271,7 @@ function setupFormSubmit() {
             if (!demandAddressResponse.ok) throw new Error('Erro ao registrar endereço');
             const demandAddress = await demandAddressResponse.json();
 
-            const demandResponse = await fetch(`${API_BASE_URL}/demands`, {
+            const demandResponse = await fetch(`${API_BASE_URL}/demands/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
