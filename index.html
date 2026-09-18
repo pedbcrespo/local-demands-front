@@ -17,12 +17,11 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>Descrição</th>
                             <th>Tipo</th>
-                            <th>Endereço</th>
                             <th>Status</th>
-                            <th>Finalizar</th>
+                            <th>Visualizar</th>
                             <th>Excluir</th>
+                            <th>Finalizar</th>
                         </tr>
                     </thead>
                     <tbody id="demandas-tbody">
@@ -114,6 +113,19 @@
                 <button type="submit" class="btn-submit">Enviar Demanda</button>
             </form>
         </section>
+    </div>
+    <div id="demand-modal" class="modal" onclick="closeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modal-title"></h3>
+                <h4 id="modal-address"></h4>
+                <p id="modal-description"></p>
+                <p id="modal-resident"></p>
+            </div>
+        </div>
     </div>
     <script src="scripts.js"></script>
 </body>

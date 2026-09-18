@@ -21,6 +21,7 @@ const states = [
 ];
 
 let currentDemands = [];
+let modalOpen = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadDemandTypes();
@@ -139,19 +140,24 @@ function renderDemands(demands) {
 
     tbody.innerHTML = demands.map(demand => {
         if(!demand) return '';
-        const address = demand.address
-            ? `${demand.address.street} - ${demand.address.district}, ${demand.address.city} - ${demand.address.state}`
-            : '—';
         const status = statusStyle[demand.status] || { style: '', message: demand.status };
         const type = DEMAND_TYPES.find(t => t.value === demand.type)?.label || demand.type;
         const isFinished = demand.status === statusStyle.FINISHED.name;
         return `
             <tr>
                 <td>${demand.title ?? '—'}</td>
-                <td>${demand.description ?? '—'}</td>
                 <td>${type}</td>
-                <td>${address}</td>
                 <td><span class="status-badge ${status.style}">${status.message}</span></td>
+                <td id="view-demand-${demand.id}" class="clicable-option">
+                    <button type="button" onclick="viewDemand(${demand.id})" class="btn btn-info">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                </td>
+                <td id="delete-demand-${demand.id}" class="clicable-option">
+                    <button type="button" onclick="deleteDemand(${demand.id})" class="btn btn-danger">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </td>
                 <td id="demand-${demand.id}" class="clicable-option">
                     <input 
                         type="checkbox" 
@@ -160,14 +166,28 @@ function renderDemands(demands) {
                         ${isFinished ? 'checked disabled' : ''}
                         onchange="finishDemand(${demand.id}, this)">
                 </td>
-                <td id="delete-demand-${demand.id}" class="clicable-option">
-                    <button type="button" onclick="deleteDemand(${demand.id})" class="btn btn-danger">
-                        <span class="material-symbols-outlined">delete</span>
-                    </button>
-                </td>
             </tr>
         `;
     }).join('');
+}
+
+function viewDemand(id) {
+    const demand = getDemandById(id);
+    if (!demand) return;
+    document.getElementById('modal-title').textContent = demand.title;
+    document.getElementById('modal-resident').textContent = demand.resident;
+    document.getElementById('modal-description').textContent = demand.description;
+    document.getElementById('modal-address').textContent = demand.address
+        ? `${demand.address.street} - ${demand.address.district}, ${demand.address.city} - ${demand.address.state}`
+        : '—';
+
+    document.getElementById('demand-modal').classList.add('active');
+    modalOpen = true;
+}
+
+function closeModal() {
+    document.getElementById('demand-modal').classList.remove('active');
+    modalOpen = false;
 }
 
 function getDemandById(id) {
